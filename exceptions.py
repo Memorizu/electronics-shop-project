@@ -1,4 +1,4 @@
 
-class TypeErr(Exception):
+class TooLongName(Exception):
     def __init__(self, message=None):
-        super().__init__(self, message)
+        self.message = message

@@ -1,4 +1,15 @@
+from exceptions import TooLongName
 from src.item import Item
+
+
+def try_long_name():
+    try:
+        # длина наименования товара больше 10 символов
+        item.name = 'СуперСмартфон'
+    except TooLongName:
+        return
+    # Exception: Длина наименования товара превышает 10 символов.
+
 
 if __name__ == '__main__':
     item = Item('Телефон', 10000, 5)
@@ -7,9 +18,7 @@ if __name__ == '__main__':
     item.name = 'Смартфон'
     assert item.name == 'Смартфон'
 
-    # длина наименования товара больше 10 символов
-    item.name = 'СуперСмартфон'
-    # Exception: Длина наименования товара превышает 10 символов.
+    try_long_name()
 
     Item.instantiate_from_csv()  # создание объектов из данных файла
     assert len(Item.all) == 5  # в файле 5 записей с данными по товарам
@@ -17,6 +26,7 @@ if __name__ == '__main__':
     item1 = Item.all[0]
     assert item1.name == 'Смартфон'
 
+    print(Item.string_to_number('5.5'))
     assert Item.string_to_number('5') == 5
     assert Item.string_to_number('5.0') == 5
     assert Item.string_to_number('5.5') == 5

@@ -1,3 +1,8 @@
+from exceptions import TooLongName
+from csv import DictReader
+import os
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,7 +18,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
         self.all.append(self)
@@ -31,3 +36,59 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+    @property
+    def name(self):
+        """
+        Геттер для параметра name
+        """
+        return self.__name
+
+    @name.setter
+    def name(self, new_name: str):
+        """
+        Сеттер для параметра name
+        Вызывает ошибку если передан name свыше 9 символов
+        """
+        if len(new_name) <= 10:
+            self.__name = new_name
+        else:
+            raise TooLongName('Exception: Длина наименования товара превышает 10 символов.')
+
+    @staticmethod
+    def read_csv_file(path: str) -> list:
+        """
+        Читает данные из csv файла
+        Возвращает данные в формате list
+        """
+        list_of_items = []
+        with open(os.path.join(path), encoding='windows-1251') as f:
+            file = DictReader(f)
+            for item in file:
+                list_of_items.append(item)
+        return list_of_items
+
+    @staticmethod
+    def string_to_number(string: str) -> [int, float]:
+        """
+        Статический метод
+        Переводит строку в int или float и округляет в меньшую сторону.
+        """
+        if '.' in string:
+            return float(string) // 1
+        else:
+            return int(string)
+
+    @classmethod
+    def instantiate_from_csv(cls) -> None:
+        """
+        Заполняет параметр all у класса данными из csv файла
+        """
+        cls.all = []
+        data = cls.read_csv_file('../items.csv')
+        for item in data:
+            cls(
+                item['name'],
+                cls.string_to_number(item['price']),
+                cls.string_to_number(item['quantity'])
+            )
