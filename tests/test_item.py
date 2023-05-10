@@ -50,3 +50,9 @@ class TestItem:
         Item.instantiate_from_csv()
         assert len(Item.all) == 5
         assert Item.all[0].name == 'Смартфон'
+
+    def test_repr(self, item_obj1):
+        assert item_obj1.__repr__() == "Item('test', 100, 5)"
+
+    def test_str(self, item_obj1):
+        assert item_obj1.__str__() == 'test'
