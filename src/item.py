@@ -1,4 +1,4 @@
-from exceptions import TooLongName
+from exceptions import TooLongName, WrongObj
 from csv import DictReader
 import os
 
@@ -24,10 +24,15 @@ class Item:
         self.all.append(self)
 
     def __repr__(self):
-        return f"Item('{self.__name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}'{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
         return self.__name
+
+    def __add__(self, other):
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        raise WrongObj('Неверный объект для сложения количества')
 
     def calculate_total_price(self) -> float:
         """
