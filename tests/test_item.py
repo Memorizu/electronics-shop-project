@@ -1,9 +1,7 @@
-import os
-
 
 import pytest
 
-from exceptions import TooLongName
+from exceptions import TooLongName, WrongObj
 from src.item import Item
 
 
@@ -56,3 +54,10 @@ class TestItem:
 
     def test_str(self, item_obj1):
         assert item_obj1.__str__() == 'test'
+
+    def test_add(self, item_obj1, item_obj2, phone_obj, unknown_obj):
+        assert item_obj1 + item_obj2 == 15
+        assert item_obj1 + phone_obj == 10
+        with pytest.raises(WrongObj):
+            item_obj1 + unknown_obj()
+
