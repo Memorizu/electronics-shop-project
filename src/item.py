@@ -11,6 +11,7 @@ class Item:
     all = []
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
+        super().__init__()
         """
         Создание экземпляра класса item.
 
