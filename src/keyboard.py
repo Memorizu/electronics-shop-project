@@ -6,6 +6,8 @@ class KeyBoard(Item, KeyboardMixin):
 
     __language = 'EN'
 
+    def __str__(self):
+        return self.name
 
 
 

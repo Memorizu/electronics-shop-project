@@ -1,7 +1,7 @@
 import pytest
 from src.item import Item
 from src.phone import Phone
-
+from src.keyboard import KeyBoard
 
 @pytest.fixture
 def item_obj1():
@@ -34,3 +34,8 @@ def phone_obj():
 @pytest.fixture
 def phone_obj_negative():
     return Phone("iPhone 14", 120_000, 5, 0)
+
+@pytest.fixture
+def keyboard_obj():
+    kb = KeyBoard('Dark Project KD87A', 9600, 5)
+    return kb

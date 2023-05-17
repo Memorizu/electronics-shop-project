@@ -4,8 +4,6 @@ class KeyboardMixin:
     def __init__(self) -> None:
         self.__language = 'EN'
 
-    def __str__(self) -> str:
-        return self.__language
 
     @property
     def language(self) -> str:
