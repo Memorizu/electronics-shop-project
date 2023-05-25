@@ -1,4 +1,4 @@
-from exceptions import TooLongName, WrongObj
+from exceptions import TooLongName, WrongObj, InstantiateCSVError
 from csv import DictReader
 import os
 
@@ -68,15 +68,18 @@ class Item:
             raise TooLongName('Exception: Длина наименования товара превышает 10 символов.')
 
     @staticmethod
-    def read_csv_file(path: str) -> list:
+    def read_csv_file(path: str) -> [list, str]:
         """
         Читает данные из csv файла
         Возвращает данные в формате list
         """
+
         list_of_items = []
         with open(os.path.join(path), encoding='windows-1251') as f:
             file = DictReader(f)
             for item in file:
+                if len(item) < 3:
+                    raise InstantiateCSVError
                 list_of_items.append(item)
         return list_of_items
 
@@ -92,15 +95,24 @@ class Item:
             return int(string)
 
     @classmethod
-    def instantiate_from_csv(cls) -> None:
+    def instantiate_from_csv(cls, path) -> [None, str]:
         """
         Заполняет параметр all у класса данными из csv файла
         """
+
         cls.all = []
-        data = cls.read_csv_file('../items.csv')
-        for item in data:
-            cls(
-                item['name'],
-                cls.string_to_number(item['price']),
-                cls.string_to_number(item['quantity'])
-            )
+        try:
+            data = cls.read_csv_file(path)
+            for item in data:
+                cls(
+                    item['name'],
+                    cls.string_to_number(item['price']),
+                    cls.string_to_number(item['quantity'])
+                )
+        except InstantiateCSVError:
+            return 'Файл повережден'
+        except FileNotFoundError:
+            return 'Файл не найден'
+
+
+# print(Item.instantiate_from_csv('../test.csv'))

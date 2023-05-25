@@ -3,6 +3,7 @@ from src.item import Item
 from src.phone import Phone
 from src.keyboard import KeyBoard
 
+
 @pytest.fixture
 def item_obj1():
     item = Item('test', 100, 5)

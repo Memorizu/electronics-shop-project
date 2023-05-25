@@ -1,7 +1,7 @@
 
 import pytest
 
-from exceptions import TooLongName, WrongObj
+from exceptions import TooLongName, WrongObj, InstantiateCSVError
 from src.item import Item
 
 
@@ -25,10 +25,6 @@ class TestItem:
         assert len(data) == 5
         assert data[0]['name'] == 'Смартфон'
 
-    def test_read_scv_error(self):
-        with pytest.raises(FileNotFoundError):
-            Item.read_csv_file('src/items.csv')
-
     def test_name(self, item_obj1):
         assert item_obj1.name == 'test'
 
@@ -45,7 +41,7 @@ class TestItem:
         assert Item.string_to_number('5.5') == 5
 
     def test_instantiate_from_scv(self):
-        Item.instantiate_from_csv()
+        Item.instantiate_from_csv('./items.csv')
         assert len(Item.all) == 5
         assert Item.all[0].name == 'Смартфон'
 
@@ -61,3 +57,9 @@ class TestItem:
         with pytest.raises(WrongObj):
             item_obj1 + unknown_obj()
 
+    def test_instantiate_from_csv_error(self):
+        assert Item.instantiate_from_csv('test') == 'Файл не найден'
+
+    def test_read_csv_file2(self):
+        with pytest.raises(InstantiateCSVError):
+            Item.read_csv_file('./test.csv')
